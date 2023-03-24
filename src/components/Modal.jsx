@@ -1,5 +1,5 @@
 import { Component } from 'react';
-
+import PropTypes from 'prop-types';
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleEscClose);
@@ -34,4 +34,10 @@ class Modal extends Component {
     );
   }
 }
+
+Modal.propTypes = {
+  handleEscClose: PropTypes.func,
+  handleMouseClose: PropTypes.func,
+  image: PropTypes.string,
+};
 export default Modal;

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 class Searchbar extends Component {
   render() {
     return (
@@ -23,5 +24,8 @@ class Searchbar extends Component {
     );
   }
 }
+Searchbar.propTypes = {
+  handleSubmit: PropTypes.func,
+};
 
 export default Searchbar;

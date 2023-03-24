@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 import Searchbar from './Searchbar.jsx';
 import axios from 'axios';
@@ -77,10 +78,14 @@ export class App extends Component {
         {this.state.hideModal === false && (
           <Modal image={this.state.largeImage} closeModal={this.closeModal} />
         )}
-        {this.state.responses.length > 0 && (
-          <Button something={this.incPage}></Button>
+        {this.state.responses.length > 11 && (
+          <Button handleLoadingMore={this.incPage}></Button>
         )}
       </div>
     );
   }
 }
+
+App.propTypes = {
+  API_KEY: PropTypes.string,
+};

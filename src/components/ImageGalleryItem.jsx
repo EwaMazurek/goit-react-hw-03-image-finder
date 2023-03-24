@@ -1,5 +1,5 @@
 import { Component } from 'react';
-
+import PropTypes from 'prop-types';
 class ImageGalleryItem extends Component {
   render() {
     return (
@@ -21,4 +21,9 @@ class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  fetchedData: PropTypes.array,
+  showModal: PropTypes.func,
+};
 export default ImageGalleryItem;
