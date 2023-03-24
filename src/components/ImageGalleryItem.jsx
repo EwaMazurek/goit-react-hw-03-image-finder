@@ -5,7 +5,11 @@ class ImageGalleryItem extends Component {
     return (
       <>
         {this.props.fetchedData.map(item => (
-          <li key={item.id} className="ImageGalleryItem">
+          <li
+            key={item.id}
+            className="ImageGalleryItem"
+            onClick={() => this.props.showModal(item.largeImageURL)}
+          >
             <img
               className="ImageGalleryItem-image"
               src={item.webformatURL}

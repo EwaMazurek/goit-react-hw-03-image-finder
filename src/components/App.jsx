@@ -5,6 +5,7 @@ import { ImageGallery } from './ImageGallery.jsx';
 import ImageGalleryItem from './ImageGalleryItem.jsx';
 import Button from './Button.jsx';
 import { Loader } from './Loader.jsx';
+import Modal from './Modal.jsx';
 axios.defaults.baseURL = 'https://pixabay.com/api';
 export class App extends Component {
   API_KEY = '33287723-ac3e9d0bf292ee3d9e11c0a66';
@@ -13,7 +14,8 @@ export class App extends Component {
     query: '',
     responses: [],
     isLoading: false,
-    showModal: false,
+    hideModal: true,
+    largeImage: '',
     page: 1,
   };
 
@@ -28,10 +30,15 @@ export class App extends Component {
     );
     this.setState(prevState => ({ page: prevState.page + 1 }));
     const data = response.data.hits;
-    this.setState(prevState => ({
-      responses: [...prevState.responses, ...data],
-      isLoading: false,
-    }));
+    if (data.length === 0) {
+      this.setState({ isLoading: false });
+      window.alert('Looks like there are no images matching your search');
+    } else {
+      this.setState(prevState => ({
+        responses: [...prevState.responses, ...data],
+        isLoading: false,
+      }));
+    }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -41,19 +48,35 @@ export class App extends Component {
 
   handleQuery = event => {
     event.preventDefault();
-    this.setState({ responses: [], page: 1 });
-
     const inputValue = event.target.elements.searchInput.value;
-    this.setState({ query: inputValue });
+    if (this.state.query !== inputValue) {
+      this.setState({ responses: [], page: 1 });
+      this.setState({ query: inputValue });
+    } else window.alert("You're testing me, aren't you?");
   };
+
+  showModal = image => {
+    this.setState({ hideModal: false, largeImage: image });
+  };
+
+  closeModal = () => {
+    this.setState({ hideModal: true });
+  };
+
   render() {
     return (
       <div className="App">
         <Searchbar handleSubmit={this.handleQuery}></Searchbar>
-        {this.state.isLoading === true && <Loader />}
+        {this.state.isLoading && <Loader />}
         <ImageGallery>
-          <ImageGalleryItem fetchedData={this.state.responses} />
+          <ImageGalleryItem
+            fetchedData={this.state.responses}
+            showModal={this.showModal}
+          />
         </ImageGallery>
+        {this.state.hideModal === false && (
+          <Modal image={this.state.largeImage} closeModal={this.closeModal} />
+        )}
         {this.state.responses.length > 0 && (
           <Button something={this.incPage}></Button>
         )}
